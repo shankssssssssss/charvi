@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Charvii 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+  }
+
+  .countdown {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* floating hearts */
+  .heart {
+    position: absolute;
+    color: rgba(255,255,255,0.5);
+    font-size: 20px;
+    animation: float 6s linear infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10vh) scale(1.2);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="countdownScreen">
+  <h1>Something special is coming 💗</h1>
+  <p>Just wait a little…</p>
+  <div class="countdown" id="countdown"></div>
+</div>
+
+<div class="container hidden" id="birthdayScreen">
+  <h1>Happy Birthday Charvii 🎉💖</h1>
+  <p>
+    From the moment you exist,<br>
+    the world became a little more beautiful ✨<br><br>
+
+    You deserve all the love,<br>
+    all the smiles,<br>
+    and all the happiness today and always 🌸<br><br>
+
+    Never forget how special you are 💕
+  </p>
+</div>
+
+<script>
+  // 🎂 SET BIRTHDAY HERE
+  // If the birthday is in 2026, this is correct.
+  // If it's in another year, just change the year.
+  const birthday = new Date("January 21, 2026 00:00:00").getTime();
+
+  const countdownEl = document.getElementById("countdown");
+  const countdownScreen = document.getElementById("countdownScreen");
+  const birthdayScreen = document.getElementById("birthdayScreen");
+
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = birthday - now;
+
+    if (diff <= 0) {
+      countdownScreen.classList.add("hidden");
+      birthdayScreen.classList.remove("hidden");
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdownEl.innerHTML =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }, 1000);
+
+  // 💕 floating hearts effect
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 6000);
+  }, 500);
+</script>
+
+</body>
+</html>
