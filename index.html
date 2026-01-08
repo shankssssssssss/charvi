@@ -5,6 +5,9 @@
 <title>For Charvii 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Font for cute cursive -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
 <style>
   body{
     margin:0;
@@ -21,8 +24,21 @@
 
   .container{padding:20px;max-width:900px;}
 
-  h1{font-size:2.8rem;margin-bottom:15px;}
-  p{font-size:1.3rem;line-height:1.6;}
+  h1{font-size:2.8rem;margin-bottom:10px;}
+  p{font-size:1.2rem;line-height:1.6;}
+
+  /* NEW fancy cursive title */
+  .fancy-title{
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;        /* 👈 bigger */
+    letter-spacing: 2px;
+    color: #FFFFFF;   /* baby pink */
+  text-shadow:
+    0 0 5px #FFC0CB,
+    0 0 10px #FF9AD5,
+    0 0 20px #FF7EB3,
+    0 0 30px #FF4D9D;
+  }
 
   /* COUNTDOWN BOXES */
   .countdown-box{
@@ -54,13 +70,28 @@
 
   .hidden{display:none;}
 
+  /* FLOATING HEARTS */
+  .heart{
+    position:absolute;
+    bottom:-20px;
+    font-size:20px;
+    animation: floatUp 6s linear infinite;
+    opacity:0.7;
+  }
+
+  @keyframes floatUp{
+    0%{transform: translateY(0) scale(0.8);opacity:0;}
+    50%{opacity:1;}
+    100%{transform: translateY(-110vh) scale(1.3);opacity:0;}
+  }
+
   /* VIDEO */
   #videoScreen{
     position:fixed;
     top:0;left:0;
     width:100%;height:100%;
     background:black;
-    display:flex;
+    display:none;
     align-items:center;
     justify-content:center;
     z-index:10;
@@ -71,6 +102,12 @@
     height:100%;
     object-fit:cover;
   }
+
+  .bottom-text{
+    margin-top:20px;
+    font-size:1rem;
+    opacity:0.9;
+  }
 </style>
 </head>
 
@@ -78,8 +115,7 @@
 
 <!-- COUNTDOWN SCREEN -->
 <div class="container" id="countdownScreen">
-  <h1>Hold on… something beautiful is almost here ✨</h1>
-  <p>Just a little more time.</p>
+  <h1 class="fancy-title">Cutu’s Birthday</h1>
 
   <div class="countdown-box">
     <div class="time-box">
@@ -99,28 +135,32 @@
       <small>SEC</small>
     </div>
   </div>
+
+  <div class="bottom-text">
+    Just a little wait… it’ll be worth it ✨
+  </div>
 </div>
 
-<!-- BIRTHDAY TEXT 1 -->
+<!-- TEXT 1 -->
 <div class="container hidden" id="textOne">
   <h1>Happiest Birthday to the cutest person ever 🎉💗</h1>
 </div>
 
-<!-- BIRTHDAY TEXT 2 -->
+<!-- TEXT 2 -->
 <div class="container hidden" id="textTwo">
   <p>So… we met in Valorant, and who knew that would turn into something this special ✨</p>
 </div>
 
-<!-- VIDEO SCREEN -->
-<div id="videoScreen" class="hidden">
-  <video id="birthdayVideo" controls autoplay>
-    <source src="YOUR_VIDEO_LINK_HERE.mp4" type="video/mp4">
+<!-- VIDEO -->
+<div id="videoScreen">
+  <video id="birthdayVideo" autoplay controls>
+    <source src="YOUR_VIDEO_FILE.mp4" type="video/mp4">
   </video>
 </div>
 
 <script>
-  // 🎂 SET BIRTHDAY
-  const birthday = new Date("January 21, 2026 00:00:00").getTime();
+  /* 🎂 SET BIRTHDAY DATE */
+  const birthday = new Date("January 22, 2026 00:00:00").getTime();
 
   const countdownScreen = document.getElementById("countdownScreen");
   const textOne = document.getElementById("textOne");
@@ -132,19 +172,18 @@
   const m = document.getElementById("minutes");
   const s = document.getElementById("seconds");
 
-  let triggered = false;
+  countdownScreen.style.display = "block";
+  textOne.style.display = "none";
+  textTwo.style.display = "none";
+  videoScreen.style.display = "none";
+
+  let flowStarted = false;
 
   setInterval(() => {
     const now = new Date().getTime();
     const diff = birthday - now;
 
-    if (diff <= 0 && !triggered) {
-      triggered = true;
-      startBirthdayFlow();
-      return;
-    }
-
-    if(diff > 0){
+    if (diff > 0) {
       const days = Math.floor(diff / (1000*60*60*24));
       const hours = Math.floor((diff / (1000*60*60)) % 24);
       const minutes = Math.floor((diff / (1000*60)) % 60);
@@ -155,26 +194,40 @@
       m.innerText = minutes;
       s.innerText = seconds;
     }
-  },1000);
+
+    if (diff <= 0 && !flowStarted) {
+      flowStarted = true;
+      startBirthdayFlow();
+    }
+  }, 1000);
 
   function startBirthdayFlow(){
-    countdownScreen.classList.add("hidden");
+    countdownScreen.style.display = "none";
 
-    // show text 1
-    textOne.classList.remove("hidden");
+    textOne.style.display = "block";
 
-    // after 3.5 sec show text 2
-    setTimeout(()=>{
-      textOne.classList.add("hidden");
-      textTwo.classList.remove("hidden");
-    },3500);
+    setTimeout(() => {
+      textOne.style.display = "none";
+      textTwo.style.display = "block";
+    }, 3500);
 
-    // after another 3.5 sec show video
-    setTimeout(()=>{
-      textTwo.classList.add("hidden");
-      videoScreen.classList.remove("hidden");
-    },7000);
+    setTimeout(() => {
+      textTwo.style.display = "none";
+      videoScreen.style.display = "flex";
+    }, 7000);
   }
+
+  /* 💖 FLOATING HEARTS */
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+  }, 600);
 </script>
 
 </body>
