@@ -6,130 +6,175 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    overflow: hidden;
+  body{
+    margin:0;
+    height:100vh;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    overflow:hidden;
   }
 
-  .container {
-    padding: 20px;
+  .container{padding:20px;max-width:900px;}
+
+  h1{font-size:2.8rem;margin-bottom:15px;}
+  p{font-size:1.3rem;line-height:1.6;}
+
+  /* COUNTDOWN BOXES */
+  .countdown-box{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    margin-top:25px;
+    flex-wrap:wrap;
   }
 
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
+  .time-box{
+    background:rgba(255,255,255,0.25);
+    backdrop-filter: blur(5px);
+    padding:15px 18px;
+    border-radius:15px;
+    min-width:90px;
   }
 
-  p {
-    font-size: 1.3rem;
-    line-height: 1.6;
+  .time-box span{
+    display:block;
+    font-size:2rem;
+    font-weight:bold;
   }
 
-  .countdown {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
+  .time-box small{
+    font-size:0.9rem;
+    letter-spacing:1px;
   }
 
-  .hidden {
-    display: none;
+  .hidden{display:none;}
+
+  /* VIDEO */
+  #videoScreen{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
   }
 
-  /* floating hearts */
-  .heart {
-    position: absolute;
-    color: rgba(255,255,255,0.5);
-    font-size: 20px;
-    animation: float 6s linear infinite;
-  }
-
-  @keyframes float {
-    0% {
-      transform: translateY(100vh) scale(0.8);
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-10vh) scale(1.2);
-      opacity: 0;
-    }
+  #videoScreen video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
   }
 </style>
 </head>
 
 <body>
 
+<!-- COUNTDOWN SCREEN -->
 <div class="container" id="countdownScreen">
-  <h1>Something special is coming 💗</h1>
-  <p>Just wait a little…</p>
-  <div class="countdown" id="countdown"></div>
+  <h1>Hold on… something beautiful is almost here ✨</h1>
+  <p>Just a little more time.</p>
+
+  <div class="countdown-box">
+    <div class="time-box">
+      <span id="days">0</span>
+      <small>DAYS</small>
+    </div>
+    <div class="time-box">
+      <span id="hours">0</span>
+      <small>HRS</small>
+    </div>
+    <div class="time-box">
+      <span id="minutes">0</span>
+      <small>MIN</small>
+    </div>
+    <div class="time-box">
+      <span id="seconds">0</span>
+      <small>SEC</small>
+    </div>
+  </div>
 </div>
 
-<div class="container hidden" id="birthdayScreen">
-  <h1>Happy Birthday Charvii 🎉💖</h1>
-  <p>
-    From the moment you exist,<br>
-    the world became a little more beautiful ✨<br><br>
+<!-- BIRTHDAY TEXT 1 -->
+<div class="container hidden" id="textOne">
+  <h1>Happiest Birthday to the cutest person ever 🎉💗</h1>
+</div>
 
-    You deserve all the love,<br>
-    all the smiles,<br>
-    and all the happiness today and always 🌸<br><br>
+<!-- BIRTHDAY TEXT 2 -->
+<div class="container hidden" id="textTwo">
+  <p>So… we met in Valorant, and who knew that would turn into something this special ✨</p>
+</div>
 
-    Never forget how special you are 💕
-  </p>
+<!-- VIDEO SCREEN -->
+<div id="videoScreen" class="hidden">
+  <video id="birthdayVideo" controls autoplay>
+    <source src="YOUR_VIDEO_LINK_HERE.mp4" type="video/mp4">
+  </video>
 </div>
 
 <script>
-  // 🎂 SET BIRTHDAY HERE
-  // If the birthday is in 2026, this is correct.
-  // If it's in another year, just change the year.
-  const birthday = new Date("January 8, 2026 11:40:00").getTime();
+  // 🎂 SET BIRTHDAY
+  const birthday = new Date("January 21, 2026 00:00:00").getTime();
 
-  const countdownEl = document.getElementById("countdown");
   const countdownScreen = document.getElementById("countdownScreen");
-  const birthdayScreen = document.getElementById("birthdayScreen");
+  const textOne = document.getElementById("textOne");
+  const textTwo = document.getElementById("textTwo");
+  const videoScreen = document.getElementById("videoScreen");
+
+  const d = document.getElementById("days");
+  const h = document.getElementById("hours");
+  const m = document.getElementById("minutes");
+  const s = document.getElementById("seconds");
+
+  let triggered = false;
 
   setInterval(() => {
     const now = new Date().getTime();
     const diff = birthday - now;
 
-    if (diff <= 0) {
-      countdownScreen.classList.add("hidden");
-      birthdayScreen.classList.remove("hidden");
+    if (diff <= 0 && !triggered) {
+      triggered = true;
+      startBirthdayFlow();
       return;
     }
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+    if(diff > 0){
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const minutes = Math.floor((diff / (1000*60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
 
-    countdownEl.innerHTML =
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }, 1000);
+      d.innerText = days;
+      h.innerText = hours;
+      m.innerText = minutes;
+      s.innerText = seconds;
+    }
+  },1000);
 
-  // 💕 floating hearts effect
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 15 + "px";
-    document.body.appendChild(heart);
+  function startBirthdayFlow(){
+    countdownScreen.classList.add("hidden");
 
-    setTimeout(() => {
-      heart.remove();
-    }, 6000);
-  }, 500);
+    // show text 1
+    textOne.classList.remove("hidden");
+
+    // after 3.5 sec show text 2
+    setTimeout(()=>{
+      textOne.classList.add("hidden");
+      textTwo.classList.remove("hidden");
+    },3500);
+
+    // after another 3.5 sec show video
+    setTimeout(()=>{
+      textTwo.classList.add("hidden");
+      videoScreen.classList.remove("hidden");
+    },7000);
+  }
 </script>
 
 </body>
