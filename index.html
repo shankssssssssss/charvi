@@ -50,14 +50,17 @@ button:hover{background:#ff2f8b;}
 .box{background:rgba(255,255,255,.25);padding:15px 18px;border-radius:15px;min-width:90px;}
 .box span{display:block;font-size:2rem;font-weight:bold}
 
-/* 💖 FLOATING UP HEARTS */
+/* 💖 HEARTS */
 .heart{
   position:absolute;
   bottom:-40px;
   font-size:26px;
-  cursor:pointer;
   user-select:none;
   animation: floatUp linear forwards;
+}
+.bg-heart{
+  opacity:0.6;
+  pointer-events:none; /* so you can’t click them */
 }
 @keyframes floatUp{
   from{ transform: translateY(0); }
@@ -94,7 +97,7 @@ button:hover{background:#ff2f8b;}
   <p style="margin-top:20px;">Just a little wait… it’ll be worth it ✨</p>
 </div>
 
-<!-- 2️⃣ TEXT + NEXT -->
+<!-- 2️⃣ TEXT -->
 <div id="screen2" class="screen">
   <h2>Happiest Birthday to the cutest person ever 🎉💗</h2>
   <p>You make everything brighter just by being you ✨</p>
@@ -136,12 +139,13 @@ button:hover{background:#ff2f8b;}
 /* 🎂 SET BIRTHDAY */
 const birthday = new Date("January 22, 2026 00:00:00").getTime();
 
-const screens={
-  1:document.getElementById("screen1"),
-  2:document.getElementById("screen2"),
-  3:document.getElementById("screen3"),
-  game:document.getElementById("gameScreen"),
-  win:document.getElementById("winScreen")
+/* screens */
+const screens = {
+  1: document.getElementById("screen1"),
+  2: document.getElementById("screen2"),
+  3: document.getElementById("screen3"),
+  game: document.getElementById("gameScreen"),
+  win: document.getElementById("winScreen")
 };
 
 const d=document.getElementById("d");
@@ -153,16 +157,13 @@ let countdownDone=false;
 
 /* COUNTDOWN */
 const timer=setInterval(()=>{
-  const now=Date.now();
-  const diff=birthday-now;
-
+  const diff=birthday-Date.now();
   if(diff<=0 && !countdownDone){
     countdownDone=true;
     clearInterval(timer);
     goTo(2);
     return;
   }
-
   if(diff>0){
     d.innerText=Math.floor(diff/(1000*60*60*24));
     h.innerText=Math.floor((diff/(1000*60*60))%24);
@@ -177,43 +178,51 @@ function goTo(n){
   screens[n].classList.add("show");
 }
 
-/* 🎮 GAME LOGIC — FLOATING UP HEARTS */
+/* 💖 BACKGROUND HEARTS (for countdown + text screens) */
+let bgInterval;
+function startBackgroundHearts(){
+  bgInterval=setInterval(()=>{
+    const heart=document.createElement("div");
+    heart.className="heart bg-heart";
+    heart.innerText="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(6+Math.random()*4)+"s";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),10000);
+  },1200);
+}
+function stopBackgroundHearts(){
+  clearInterval(bgInterval);
+}
+startBackgroundHearts();   // 🔥 hearts start on countdown screen
+
+/* 🎮 GAME */
 let score=0;
-const scoreText=document.getElementById("scoreText");
 let gameInterval;
+const scoreText=document.getElementById("scoreText");
 
 function startGame(){
+  stopBackgroundHearts();  // stop bg hearts during game
   goTo("game");
   score=0;
   scoreText.innerText="0 / 10";
-
-  gameInterval=setInterval(spawnHeart,800);
+  gameInterval=setInterval(spawnGameHeart,800);
 }
 
-function spawnHeart(){
+function spawnGameHeart(){
   const heart=document.createElement("div");
   heart.className="heart";
   heart.innerText="💖";
-
   heart.style.left=Math.random()*90+"vw";
   heart.style.animationDuration=(4+Math.random()*2)+"s";
-
   document.body.appendChild(heart);
 
-  // mobile + desktop
-  heart.addEventListener("click",catchHeart);
-  heart.addEventListener("touchstart",catchHeart);
-
-  function catchHeart(e){
-    e.preventDefault();
+  heart.onclick=heart.ontouchstart=()=>{
     score++;
     scoreText.innerText=score+" / 10";
     heart.remove();
-
-    if(score>=10){
-      endGame();
-    }
-  }
+    if(score>=10) endGame();
+  };
 
   setTimeout(()=>heart.remove(),7000);
 }
