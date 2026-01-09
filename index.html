@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>For Charvii 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
@@ -25,8 +26,12 @@ body{
   font-family:'Great Vibes',cursive;
   font-size:4rem;
   letter-spacing:2px;
-  color:#fff;
-  text-shadow:0 0 5px #FFC0CB,0 0 10px #FF9AD5,0 0 20px #FF7EB3,0 0 30px #FF4D9D;
+  color:#FFFFFF;
+  text-shadow:
+    0 0 5px #FFC0CB,
+    0 0 10px #FF9AD5,
+    0 0 20px #FF7EB3,
+    0 0 30px #FF4D9D;
 }
 
 button{
@@ -45,17 +50,21 @@ button:hover{background:#ff2f8b;}
 .box{background:rgba(255,255,255,.25);padding:15px 18px;border-radius:15px;min-width:90px;}
 .box span{display:block;font-size:2rem;font-weight:bold}
 
+/* 💖 FLOATING UP HEARTS */
 .heart{
   position:absolute;
-  font-size:24px;
+  bottom:-40px;
+  font-size:26px;
   cursor:pointer;
-  animation:floatUp 6s linear forwards;
+  user-select:none;
+  animation: floatUp linear forwards;
 }
 @keyframes floatUp{
-  from{transform:translateY(0)}
-  to{transform:translateY(-110vh)}
+  from{ transform: translateY(0); }
+  to{ transform: translateY(-120vh); }
 }
 
+/* video */
 #videoScreen{
   position:fixed;
   inset:0;
@@ -63,6 +72,7 @@ button:hover{background:#ff2f8b;}
   display:none;
   justify-content:center;
   align-items:center;
+  z-index:10;
 }
 #videoScreen video{width:100%;height:100%;object-fit:cover;}
 </style>
@@ -102,13 +112,13 @@ button:hover{background:#ff2f8b;}
   <button onclick="startGame()">Play the game</button>
 </div>
 
-<!-- 4️⃣ GAME SCREEN -->
+<!-- 4️⃣ GAME -->
 <div id="gameScreen" class="screen">
   <h2>Catch 10 hearts 💖</h2>
   <p id="scoreText">0 / 10</p>
 </div>
 
-<!-- WIN SCREEN -->
+<!-- 5️⃣ WIN -->
 <div id="winScreen" class="screen">
   <h2>YAYYYYY you did it 🎉😭</h2>
   <p>So here is the surprise for you 💝</p>
@@ -124,7 +134,7 @@ button:hover{background:#ff2f8b;}
 
 <script>
 /* 🎂 SET BIRTHDAY */
-const birthday = new Date("January 9, 2026 16:30:00").getTime();
+const birthday = new Date("January 9, 2026 00:00:00").getTime();
 
 const screens={
   1:document.getElementById("screen1"),
@@ -148,7 +158,7 @@ const timer=setInterval(()=>{
 
   if(diff<=0 && !countdownDone){
     countdownDone=true;
-    clearInterval(timer);   // 🔥 STOP TIMER
+    clearInterval(timer);
     goTo(2);
     return;
   }
@@ -167,7 +177,7 @@ function goTo(n){
   screens[n].classList.add("show");
 }
 
-/* GAME */
+/* 🎮 GAME LOGIC — FLOATING UP HEARTS */
 let score=0;
 const scoreText=document.getElementById("scoreText");
 let gameInterval;
@@ -184,11 +194,18 @@ function spawnHeart(){
   const heart=document.createElement("div");
   heart.className="heart";
   heart.innerText="💖";
+
   heart.style.left=Math.random()*90+"vw";
-  heart.style.bottom="-20px";
+  heart.style.animationDuration=(4+Math.random()*2)+"s";
+
   document.body.appendChild(heart);
 
-  heart.onclick=()=>{
+  // mobile + desktop
+  heart.addEventListener("click",catchHeart);
+  heart.addEventListener("touchstart",catchHeart);
+
+  function catchHeart(e){
+    e.preventDefault();
     score++;
     scoreText.innerText=score+" / 10";
     heart.remove();
@@ -196,9 +213,9 @@ function spawnHeart(){
     if(score>=10){
       endGame();
     }
-  };
+  }
 
-  setTimeout(()=>heart.remove(),6000);
+  setTimeout(()=>heart.remove(),7000);
 }
 
 function endGame(){
@@ -206,7 +223,7 @@ function endGame(){
   goTo("win");
 }
 
-/* VIDEO */
+/* 🎬 VIDEO */
 function openVideo(){
   document.getElementById("videoScreen").style.display="flex";
   document.getElementById("surpriseVideo").play();
