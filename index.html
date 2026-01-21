@@ -6,6 +6,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M1HDT2VHEZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M1HDT2VHEZ');
+</script>
+
 <style>
 body{
   margin:0;
@@ -60,7 +69,7 @@ button:hover{background:#ff2f8b;}
 }
 .bg-heart{
   opacity:0.6;
-  pointer-events:none; /* so you can’t click them */
+  pointer-events:none;
 }
 @keyframes floatUp{
   from{ transform: translateY(0); }
@@ -178,7 +187,7 @@ function goTo(n){
   screens[n].classList.add("show");
 }
 
-/* 💖 BACKGROUND HEARTS (for countdown + text screens) */
+/* 💖 BACKGROUND HEARTS */
 let bgInterval;
 function startBackgroundHearts(){
   bgInterval=setInterval(()=>{
@@ -194,7 +203,7 @@ function startBackgroundHearts(){
 function stopBackgroundHearts(){
   clearInterval(bgInterval);
 }
-startBackgroundHearts();   // 🔥 hearts start on countdown screen
+startBackgroundHearts();
 
 /* 🎮 GAME */
 let score=0;
@@ -202,7 +211,7 @@ let gameInterval;
 const scoreText=document.getElementById("scoreText");
 
 function startGame(){
-  stopBackgroundHearts();  // stop bg hearts during game
+  stopBackgroundHearts();
   goTo("game");
   score=0;
   scoreText.innerText="0 / 10";
@@ -234,8 +243,10 @@ function endGame(){
 
 /* 🎬 VIDEO */
 function openVideo(){
+  const vid = document.getElementById("surpriseVideo");
   document.getElementById("videoScreen").style.display="flex";
-  document.getElementById("surpriseVideo").play();
+  vid.currentTime = 0;
+  vid.play().catch(()=>{});
 }
 </script>
 
