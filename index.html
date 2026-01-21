@@ -16,6 +16,14 @@
 </script>
 
 <style>
+/* 🔤 Awesome Regular Font */
+@font-face {
+  font-family: 'AwesomeScript';
+  src: url('Awesome.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body{
   margin:0;
   height:100vh;
@@ -28,6 +36,7 @@ body{
   text-align:center;
   overflow:hidden;
 }
+
 .screen{display:none; padding:20px; max-width:900px;}
 .show{display:block;}
 
@@ -76,6 +85,21 @@ button:hover{background:#ff2f8b;}
   to{ transform: translateY(-120vh); }
 }
 
+/* 💕 Fancy glow text for all non-countdown pages */
+.fancy-text {
+  font-family: 'AwesomeScript', cursive;
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+  color: #FFFFFF;
+  text-shadow:
+    0 0 5px #FFC0CB,
+    0 0 10px #FF9AD5,
+    0 0 20px #FF7EB3,
+    0 0 30px #FF4D9D;
+}
+
 /* video */
 #videoScreen{
   position:fixed;
@@ -108,14 +132,18 @@ button:hover{background:#ff2f8b;}
 
 <!-- 2️⃣ TEXT -->
 <div id="screen2" class="screen">
-  <h2>Happiest Birthday to the cutest person ever 🎉💗</h2>
-  <p>You make everything brighter just by being you ✨</p>
+  <h2 class="fancy-text">
+    Happiest Birthday to the cutest person ever 🎉💗
+  </h2>
+  <p class="fancy-text">
+    You make everything brighter just by being you ✨
+  </p>
   <button onclick="goTo(3)">Next</button>
 </div>
 
 <!-- 3️⃣ GAME INTRO -->
 <div id="screen3" class="screen">
-  <p>
+  <p class="fancy-text">
     So we met in Valorant…  
     and now here is something special for you 💕  
     <br><br>
@@ -126,14 +154,14 @@ button:hover{background:#ff2f8b;}
 
 <!-- 4️⃣ GAME -->
 <div id="gameScreen" class="screen">
-  <h2>Catch 10 hearts 💖</h2>
-  <p id="scoreText">0 / 10</p>
+  <h2 class="fancy-text">Catch 10 hearts 💖</h2>
+  <p id="scoreText" class="fancy-text">0 / 10</p>
 </div>
 
 <!-- 5️⃣ WIN -->
 <div id="winScreen" class="screen">
-  <h2>YAYYYYY you did it 🎉😭</h2>
-  <p>So here is the surprise for you 💝</p>
+  <h2 class="fancy-text">YAYYYYY you did it 🎉😭</h2>
+  <p class="fancy-text">So here is the surprise for you 💝</p>
   <button onclick="openVideo()">Open Surprise</button>
 </div>
 
