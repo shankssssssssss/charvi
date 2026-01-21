@@ -53,16 +53,22 @@ body{
 }
 
 button{
-  margin-top:20px;
-  padding:12px 30px;
-  border:none;
-  border-radius:30px;
-  background:#ff5fa2;
-  color:white;
-  font-size:1.1rem;
-  cursor:pointer;
+  margin-top: 28px;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 40px;
+  background: #ff5fa2;
+  color: white;
+  font-size: 1.35rem;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
 }
-button:hover{background:#ff2f8b;}
+button:hover{
+  background: #ff2f8b;
+  transform: scale(1.05);
+}
 
 .boxes{display:flex;gap:15px;justify-content:center;margin-top:25px;flex-wrap:wrap;}
 .box{background:rgba(255,255,255,.25);padding:15px 18px;border-radius:15px;min-width:90px;}
@@ -88,11 +94,15 @@ button:hover{background:#ff2f8b;}
 /* 💕 Fancy glow text for all non-countdown pages */
 .fancy-text {
   font-family: 'AwesomeScript', cursive;
-  font-size: 2.6rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  line-height: 1.4;
+  font-size: 3.1rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 1.5;
   color: #FFFFFF;
+  text-shadow:
+    0 0 4px #FFC0CB,
+    0 0 8px #FF9AD5,
+    0 0 14px #FF7EB3;
 }
 
 /* video */
@@ -128,7 +138,7 @@ button:hover{background:#ff2f8b;}
 <!-- 2️⃣ TEXT -->
 <div id="screen2" class="screen">
   <h2 class="fancy-text">
-    Happiest Birthday to the cutest person  🎉💗
+    Happiest Birthday to the cutest person 🎉💗
   </h2>
   
   <button onclick="goTo(3)">Next</button>
