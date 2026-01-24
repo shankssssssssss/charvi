@@ -6,28 +6,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-M1HDT2VHEZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-M1HDT2VHEZ');
-</script>
-
 <style>
-/* 🔤 Awesome Regular Font */
-@font-face {
-  font-family: 'AwesomeScript';
-  src: url('Awesome.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body{
   margin:0;
   height:100vh;
-  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  background:radial-gradient(circle at center, #14000a 0%, #000000 60%, #000000 100%);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -37,247 +20,64 @@ body{
   overflow:hidden;
 }
 
-.screen{display:none; padding:20px; max-width:900px;}
-.show{display:block;}
-
+/* 💖 CENTER TEXT — NEON PINK GLOW */
 .fancy-title{
   font-family:'Great Vibes',cursive;
-  font-size:4rem;
+  font-size:4.6rem;
   letter-spacing:2px;
-  color:#FFFFFF;
+  color:#ffb3e6;
   text-shadow:
-    0 0 5px #FFC0CB,
-    0 0 10px #FF9AD5,
-    0 0 20px #FF7EB3,
-    0 0 30px #FF4D9D;
+    0 0 6px #ff4da6,
+    0 0 14px #ff2f8b,
+    0 0 28px #ff1493,
+    0 0 48px #ff007f,
+    0 0 70px #ff007f;
+  z-index:2;
 }
 
-button{
-  margin-top: 28px;
-  padding: 16px 40px;
-  border: none;
-  border-radius: 40px;
-  background: #ff5fa2;
-  color: white;
-  font-size: 1.35rem;
-  font-weight: 400;
-  cursor: pointer;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-  transition: all 0.25s ease;
-}
-button:hover{
-  background: #ff2f8b;
-  transform: scale(1.05);
-}
-
-.boxes{display:flex;gap:15px;justify-content:center;margin-top:25px;flex-wrap:wrap;}
-.box{background:rgba(255,255,255,.25);padding:15px 18px;border-radius:15px;min-width:90px;}
-.box span{display:block;font-size:2rem;font-weight:bold}
-
-/* 💖 HEARTS */
-.heart{
+/* ✨ NEON SPARKLES */
+.sparkle{
   position:absolute;
-  bottom:-40px;
-  font-size:26px;
-  user-select:none;
-  animation: floatUp linear forwards;
-}
-.bg-heart{
-  opacity:0.6;
+  width:4px;
+  height:4px;
+  background:#ff4da6;
+  border-radius:50%;
+  opacity:0;
+  box-shadow:
+    0 0 6px #ff4da6,
+    0 0 12px #ff2f8b,
+    0 0 20px #ff1493;
+  animation: twinkle 2.5s ease-in-out forwards;
   pointer-events:none;
 }
-@keyframes floatUp{
-  from{ transform: translateY(0); }
-  to{ transform: translateY(-120vh); }
-}
 
-/* 💕 Fancy glow text for all non-countdown pages */
-.fancy-text {
-  font-family: 'AwesomeScript', cursive;
-  font-size: 3.1rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  line-height: 1.5;
-  color: #FFFFFF;
-  text-shadow:
-    0 0 4px #FFC0CB,
-    0 0 8px #FF9AD5,
-    0 0 14px #FF7EB3;
+@keyframes twinkle{
+  0%   { opacity:0; transform:scale(0.4); }
+  30%  { opacity:1; transform:scale(1); }
+  70%  { opacity:1; transform:scale(1.2); }
+  100% { opacity:0; transform:scale(0.3); }
 }
-
-/* video */
-#videoScreen{
-  position:fixed;
-  inset:0;
-  background:black;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:10;
-}
-#videoScreen video{width:100%;height:100%;object-fit:cover;}
 </style>
 </head>
 
 <body>
 
-<!-- 1️⃣ COUNTDOWN -->
-<div id="screen1" class="screen show">
-  <h1 class="fancy-title">Cutu’s Birthday</h1>
-
-  <div class="boxes">
-    <div class="box"><span id="d">0</span>DAYS</div>
-    <div class="box"><span id="h">0</span>HRS</div>
-    <div class="box"><span id="m">0</span>MIN</div>
-    <div class="box"><span id="s">0</span>SEC</div>
-  </div>
-
-  <p style="margin-top:20px;">Just a little wait… it’ll be worth it ✨</p>
-</div>
-
-<!-- 2️⃣ TEXT -->
-<div id="screen2" class="screen">
-  <h2 class="fancy-text">
-    Happiest Birthday to the cutest person 💗
-  </h2>
-  
-  <button onclick="goTo(3)">Next</button>
-</div>
-
-<!-- 3️⃣ GAME INTRO -->
-<div id="screen3" class="screen">
-  <p class="fancy-text"> 
-    Now here is something special for you 💕  
-    <br><br>
-    But first — you have to play a game 😌
-  </p>
-  <button onclick="startGame()">Play the game</button>
-</div>
-
-<!-- 4️⃣ GAME -->
-<div id="gameScreen" class="screen">
-  <h2 class="fancy-text">Catch 10 hearts 💖</h2>
-  <p id="scoreText" class="fancy-text">0 / 10</p>
-</div>
-
-<!-- 5️⃣ WIN -->
-<div id="winScreen" class="screen">
-  <h2 class="fancy-text">YAYYYYY you did it 🎉😭</h2>
-  <p class="fancy-text">So here is the surprise for you 💝</p>
-  <button onclick="openVideo()">Open Surprise</button>
-</div>
-
-<!-- VIDEO -->
-<div id="videoScreen">
-  <video id="surpriseVideo" controls>
-    <source src="final_gift.mp4" type="video/mp4">
-  </video>
-</div>
+<h1 class="fancy-title">Cutest Person 💗</h1>
 
 <script>
-/* 🎂 SET BIRTHDAY */
-const birthday = new Date("January 22, 2026 00:00:00").getTime();
-
-/* screens */
-const screens = {
-  1: document.getElementById("screen1"),
-  2: document.getElementById("screen2"),
-  3: document.getElementById("screen3"),
-  game: document.getElementById("gameScreen"),
-  win: document.getElementById("winScreen")
-};
-
-const d=document.getElementById("d");
-const h=document.getElementById("h");
-const m=document.getElementById("m");
-const s=document.getElementById("s");
-
-let countdownDone=false;
-
-/* COUNTDOWN */
-const timer=setInterval(()=>{
-  const diff=birthday-Date.now();
-  if(diff<=0 && !countdownDone){
-    countdownDone=true;
-    clearInterval(timer);
-    goTo(2);
-    return;
-  }
-  if(diff>0){
-    d.innerText=Math.floor(diff/(1000*60*60*24));
-    h.innerText=Math.floor((diff/(1000*60*60))%24);
-    m.innerText=Math.floor((diff/(1000*60))%60);
-    s.innerText=Math.floor((diff/1000)%60);
-  }
-},1000);
-
-/* NAVIGATION */
-function goTo(n){
-  Object.values(screens).forEach(s=>s.classList.remove("show"));
-  screens[n].classList.add("show");
+/* ✨ TINY NEON SPARKLES */
+function startSparkles(){
+  setInterval(()=>{
+    const sparkle=document.createElement("div");
+    sparkle.className="sparkle";
+    sparkle.style.left=Math.random()*100+"vw";
+    sparkle.style.top=Math.random()*100+"vh";
+    document.body.appendChild(sparkle);
+    setTimeout(()=>sparkle.remove(),2500);
+  },250);
 }
 
-/* 💖 BACKGROUND HEARTS */
-let bgInterval;
-function startBackgroundHearts(){
-  bgInterval=setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart bg-heart";
-    heart.innerText="💖";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(6+Math.random()*4)+"s";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),10000);
-  },1200);
-}
-function stopBackgroundHearts(){
-  clearInterval(bgInterval);
-}
-startBackgroundHearts();
-
-/* 🎮 GAME */
-let score=0;
-let gameInterval;
-const scoreText=document.getElementById("scoreText");
-
-function startGame(){
-  stopBackgroundHearts();
-  goTo("game");
-  score=0;
-  scoreText.innerText="0 / 10";
-  gameInterval=setInterval(spawnGameHeart,800);
-}
-
-function spawnGameHeart(){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerText="💖";
-  heart.style.left=Math.random()*90+"vw";
-  heart.style.animationDuration=(4+Math.random()*2)+"s";
-  document.body.appendChild(heart);
-
-  heart.onclick=heart.ontouchstart=()=>{
-    score++;
-    scoreText.innerText=score+" / 10";
-    heart.remove();
-    if(score>=10) endGame();
-  };
-
-  setTimeout(()=>heart.remove(),7000);
-}
-
-function endGame(){
-  clearInterval(gameInterval);
-  goTo("win");
-}
-
-/* 🎬 VIDEO */
-function openVideo(){
-  const vid = document.getElementById("surpriseVideo");
-  document.getElementById("videoScreen").style.display="flex";
-  vid.currentTime = 0;
-  vid.play().catch(()=>{});
-}
+startSparkles();
 </script>
 
 </body>
